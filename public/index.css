@@ -1,0 +1,13 @@
+header{
+    text-align: center;
+}
+main {
+    align-self: center;
+    text-align: center;
+    border: 1px solid red;
+    height: 700px;
+    overflow: scroll;
+    max-width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+}

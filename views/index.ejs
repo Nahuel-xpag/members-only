@@ -3,11 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/index.css">
     <title>members board</title>
 </head>
 <body>
+    <header>
     <h1>Welcome to the member board</h1>
     <h2>Member messages will be displayed here!</h2>
-    
+    </header>
+    <main>
+        <div class="message-board">
+            <%if (locals.messages) { %>
+                <% messages.forEach(function(message){ %>
+                    <h3 class="message-user">Name: <%=message.username%></h3>
+                    <div class="message"><p><%=message.body%></p></div>
+                <%})}else{%>
+                    <h2>Seems like this is empty...</h2>
+                <%}%>
+        </div>
+    </main>
 </body>
 </html>
