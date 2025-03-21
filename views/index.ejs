@@ -12,6 +12,7 @@
     <h2>Member messages will be displayed here!</h2>
     </header>
     <main>
+        <%- include("partials/success.ejs") %>
         <div class="message-board">
             <%if (locals.messages) { %>
                 <% messages.forEach(function(message){ %>
@@ -20,6 +21,23 @@
                 <%})}else{%>
                     <h2>Seems like this is empty...</h2>
                 <%}%>
+        </div>
+        <div class="sign-up">
+            <h1>Sign up to write a message. And see who is behind them</h1>
+            <%- include("partials/errors.ejs")%>
+            <form action="/sign-up" method="POST">
+                <label for="firstName">First Name:</label>
+                <input type="text" name="firstName" id="firstName" required>
+                <label for="lastName">Last Name:</label>
+                <input type="text" name="lastName" id="lastName" required>
+                <label for="email">E-Mail:</label>
+                <input type="email" name="email" id="email" required>
+                <label for="password">Password:</label>
+                <input type="password" name="password" id="password">
+                <label for="confirm-password">Confirm password:</label>
+                <input type="password" name="confirm-password" id="confirm-password">
+                <button type="submit">Submit</button>
+            </form>
         </div>
     </main>
 </body>
