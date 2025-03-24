@@ -31,7 +31,6 @@
         
     </div>
     <main>
-        <%- include("partials/success.ejs") %>
         <div class="message-board">
             <%if (locals.messages) { %>
                 <% messages.forEach(function(message){ %>
@@ -41,6 +40,9 @@
                     <h2>Seems like this is empty...</h2>
                 <%}%>
         </div>
+        <%if (locals.user) {%>
+            <a href="/new-message-form" class="new-message-button">Leave a new message :)</a>
+        <%}%>
     </main>
 </body>
 </html>

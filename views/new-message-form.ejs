@@ -1,0 +1,14 @@
+<head>
+    <link rel="stylesheet" href="/index.css">
+</head>
+<%if (locals.user){ %> 
+    <div class="new-message-form">
+        <form action="/new-message" method="POST">
+            <label for="name">Name:</label>
+            <input type="text" id="name" value="<%=user.name %> <%=user.surname%>" name="name" disabled="true">
+            <label for="message">Message:</label>
+            <textarea name="message" id="message" rows="20" cols="50"></textarea>
+            <button>Submit message (secret for non-members)</button>
+        </form>
+    </div>
+<%}%>

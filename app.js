@@ -42,5 +42,8 @@ app.post(
         }
         res.redirect("/");
     })
+ });
+ app.get("/new-message-form", (req, res) =>{
+    res.render("new-message-form", {user: req.user})
  })
 app.listen(3000, () => console.log("server listening on port 3000!"))
