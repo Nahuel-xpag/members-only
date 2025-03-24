@@ -1,6 +1,9 @@
 const {body, validationResult} = require("express-validator");
 const { insertUser } = require("../db/query");
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
 const bcrypt = require('bcryptjs');
+const pool = require("../db/pool");
 const alphaErr = "must only contain letters.";
 const lengthErr = "must be between 1 and 10 characters.";
 const emailErr = "must be a valid format (should include '@')."
@@ -21,12 +24,48 @@ const validateUser = [
         return value === req.body.password;
       }).withMessage("Both passwords must match"),
 ]
-/*exports.usersCreateGet = (req, res) => {
-    res.render("createUser", {
-        title: "Create user",
-    });
-};
-*/
+
+passport.use(
+    new LocalStrategy({
+        usernameField: 'email',
+        passwordField: 'password'
+    }, async (email, password, done) => {
+        try {
+            const {rows} = await pool.query("SELECT * FROM members WHERE email = $1", [email]);
+            const user = rows[0];
+
+            if(!user){
+                return done(null, false, {message: "user not found"});
+            }
+            const match = await bcrypt.compare(password, user.password);
+            if (!match){
+                return done(null, false, {message: "password is incorrect"});
+            }
+            return done(null, user);
+        } catch(err) {
+            return done(err)
+        }
+    })
+);
+
+passport.serializeUser((user, done) => {
+    done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
+    try{
+        const { rows } = await pool.query("SELECT * FROM members WHERE id = $1", [id]);
+        const user = rows[0];
+        done(null, user);
+    } catch(err){
+        done(err);
+    }
+});
+exports.auth = () => passport.authenticate("local", {
+successRedirect: "/",
+failureRedirect: "/"
+})
+
 
 exports.usersCreatePost = [
     validateUser,
