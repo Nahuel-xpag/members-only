@@ -41,8 +41,31 @@
                 <%}%>
         </div>
         <%if (locals.user) {%>
-            <a href="/new-message-form" class="new-message-button">Leave a new message :)</a>
+            <div class="links">
+                <a href="/new-message-form" class="new-message-button">Leave a new message :)</a>
+                <button class="join-button">Join the club</button>
+                <div id="overlay"></div>
+                <div class="join-club-div">
+                    <label for="code">Insert the secret code</label>
+                    <input type="text" name="secret-code" id="secret-code">
+                    <button>Submit</button>
+                    <button id="close-club-form">Go Back</button>
+                </div>
+            </div>
         <%}%>
     </main>
 </body>
 </html>
+<script>
+    const button = document.querySelector('.join-button');
+    const joinClubDiv = document.querySelector('.join-club-div');
+    const closeButton = document.getElementById("close-club-form");
+    button.addEventListener('click', () => {
+            joinClubDiv.setAttribute('pressed', true);
+            overlay.style.visibility = 'visible'; 
+    })
+    closeButton.addEventListener('click', () => {
+            joinClubDiv.removeAttribute('pressed');
+            overlay.style.visibility = 'hidden'
+    })
+</script>

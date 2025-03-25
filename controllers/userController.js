@@ -1,5 +1,5 @@
 const {body, validationResult} = require("express-validator");
-const { insertUser } = require("../db/query");
+const { insertUser, insertMessage, getMessages } = require("../db/query");
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const bcrypt = require('bcryptjs');
@@ -61,11 +61,20 @@ passport.deserializeUser(async (id, done) => {
         done(err);
     }
 });
+
+exports.getIndex = async (req, res) => {
+    const {rows} = await getMessages();
+    res.render("index", {user: req.user, messages: rows})
+}
+
 exports.auth = () => passport.authenticate("local", {
 successRedirect: "/",
 failureRedirect: "/"
 })
 
+/*exports.getMessages = async(req, res) => {
+    await 
+}*/
 
 exports.usersCreatePost = [
     validateUser,
@@ -85,3 +94,8 @@ exports.usersCreatePost = [
         }
     }
 ];
+
+exports.userMessagePost = async (req, res) => {
+    await insertMessage(req.body.name, req.body.message, new Date(Date.now()))
+    res.redirect("/");
+}
