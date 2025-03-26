@@ -33,9 +33,23 @@
     <main>
         <div class="message-board">
             <%if (locals.messages) { %>
-                <% messages.forEach(function(message){ %>
-                    <h3 class="message-user">Name: <%=message.username%></h3>
-                    <div class="message"><p><%=message.body%></p></div>
+                <% messages.forEach(function(message){console.log(message.date) %>
+                    <%if(locals.user && locals.user.membership===true){%>
+                        <ul class="message-box">
+                            <li>
+                                <h3 class="message-user">By: <%=message.by_user%> <%=parsedDate%></h3>
+                                <div class="message"><p><%=message.body%></p></div>
+                            </li>
+                        </ul>    
+                    <%}else{%>
+                    <ul class="message-box">
+                        <li>
+                            <h3 class="message-user">by Anonymous</h3>
+                            <h5><%=parsedDate%></h5>
+                            <div class="message"><p><%=message.body%></p></div>
+                        </li>
+                    </ul>
+                    <%}%>
                 <%})}else{%>
                     <h2>Seems like this is empty...</h2>
                 <%}%>
@@ -45,11 +59,26 @@
                 <a href="/new-message-form" class="new-message-button">Leave a new message :)</a>
                 <button class="join-button">Join the club</button>
                 <div id="overlay"></div>
+                <%if(locals.failedAttempt === true){%>
+                    <div class="join-club-div">
+                        <form action="./secret-code" method="POST">
+                            <label for="code">Insert the secret code</label>
+                            <input type="text" name="code" id="code">
+                            <input type="hidden" name="email" value="<%=user.email%>">
+                            <button id="submitCode">Submit</button>
+                            <button id="close-club-form"><a href="/"></a>Go Back</button>
+                            <h4>Wrong code, try again.</h4>
+                        </form>
+                    </div>
+                <%}%>
                 <div class="join-club-div">
-                    <label for="code">Insert the secret code</label>
-                    <input type="text" name="secret-code" id="secret-code">
-                    <button>Submit</button>
-                    <button id="close-club-form">Go Back</button>
+                    <form action="./secret-code" method="POST">
+                        <label for="code">Insert the secret code</label>
+                        <input type="text" name="code" id="code">
+                        <input type="hidden" name="email" value="<%=user.email%>">
+                        <button id="submitCode">Submit</button>
+                        <button id="close-club-form">Go Back</button>
+                    </form>
                 </div>
             </div>
         <%}%>

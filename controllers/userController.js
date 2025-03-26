@@ -1,5 +1,5 @@
 const {body, validationResult} = require("express-validator");
-const { insertUser, insertMessage, getMessages } = require("../db/query");
+const { insertUser, insertMessage, getMessages, getMembership } = require("../db/query");
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const bcrypt = require('bcryptjs');
@@ -64,7 +64,16 @@ passport.deserializeUser(async (id, done) => {
 
 exports.getIndex = async (req, res) => {
     const {rows} = await getMessages();
-    res.render("index", {user: req.user, messages: rows})
+    const options = 
+         {
+            weekday: 'short',
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric' 
+         }
+    const formattedDate = new Intl.DateTimeFormat('en-US', options).format(rows.date);
+    const failedAttempt = req.session.failedAttempt ?? false
+    res.render("index", {user: req.user, messages: rows, parsedDate: formattedDate, failedAttempt: failedAttempt})
 }
 
 exports.auth = () => passport.authenticate("local", {
@@ -98,4 +107,16 @@ exports.usersCreatePost = [
 exports.userMessagePost = async (req, res) => {
     await insertMessage(req.body.name, req.body.message, new Date(Date.now()))
     res.redirect("/");
+}
+
+exports.membershipPost = async(req,res) => {
+    if(req.body.code === process.env.SECRET){
+        await getMembership(req.body.email)
+        res.redirect("/");
+    }else{
+        req.session.failedAttempt = true
+        res.redirect("/");
+    }
+   
+    
 }

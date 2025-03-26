@@ -19,12 +19,16 @@ async function insertUser(name, lastname, email, password) {
 }
 async function insertMessage(message, user, time){
     const date = time.toISOString();
-    await pool.query("INSERT INTO messages (by_user, body, date) VALUES ($1, $2, $3);",[message, user, date])
+    const slicedDate = date.slice(0,15);  
+    await pool.query("INSERT INTO messages (by_user, body, date) VALUES ($1, $2, $3);",[message, user, slicedDate])
 }
 
-
+async function getMembership(user){
+  await pool.query("UPDATE members SET membership = true WHERE email = $1;",[user]);
+}
 module.exports = {
     insertUser,
     insertMessage,
-    getMessages
+    getMessages,
+    getMembership
 }
