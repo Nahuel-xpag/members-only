@@ -75,15 +75,11 @@ exports.getIndex = async (req, res) => {
     const failedAttempt = req.session.failedAttempt ?? false
     res.render("index", {user: req.user, messages: rows, parsedDate: formattedDate, failedAttempt: failedAttempt})
 }
-
 exports.auth = () => passport.authenticate("local", {
 successRedirect: "/",
 failureRedirect: "/"
 })
 
-/*exports.getMessages = async(req, res) => {
-    await 
-}*/
 
 exports.usersCreatePost = [
     validateUser,
@@ -119,4 +115,9 @@ exports.membershipPost = async(req,res) => {
     }
    
     
+}
+exports.messageDelete = (req,res) => {
+    console.log(req.user);
+    console.log(req.messages)
+    res.redirect("/");
 }

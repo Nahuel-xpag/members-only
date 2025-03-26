@@ -3,7 +3,7 @@ const path = require('node:path');
 const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require("passport-local");
-const { usersCreatePost, auth, getIndex, userMessagePost, membershipPost} = require('./controllers/userController');
+const { usersCreatePost, auth, getIndex, userMessagePost, membershipPost, messageDelete} = require('./controllers/userController');
 const bcrypt = require('bcryptjs');
 const pool = require('./db/pool');
 require('dotenv').config();
@@ -46,4 +46,5 @@ app.post(
  });
  app.post("/new-message", userMessagePost);
  app.post("/secret-code", membershipPost);
+ app.get("/delete-message", messageDelete);
 app.listen(3000, () => console.log("server listening on port 3000!"))
