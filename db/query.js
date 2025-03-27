@@ -26,9 +26,14 @@ async function insertMessage(message, user, time){
 async function getMembership(user){
   await pool.query("UPDATE members SET membership = true WHERE email = $1;",[user]);
 }
+
+async function deleteMessage(id){
+  await pool.query("DELETE FROM messages WHERE id = $1;",[id]);
+}
 module.exports = {
     insertUser,
     insertMessage,
     getMessages,
-    getMembership
+    getMembership,
+    deleteMessage
 }

@@ -46,5 +46,5 @@ app.post(
  });
  app.post("/new-message", userMessagePost);
  app.post("/secret-code", membershipPost);
- app.get("/delete-message", messageDelete);
+ app.post("/delete-message", messageDelete);
 app.listen(3000, () => console.log("server listening on port 3000!"))

@@ -1,5 +1,5 @@
 const {body, validationResult} = require("express-validator");
-const { insertUser, insertMessage, getMessages, getMembership } = require("../db/query");
+const { insertUser, insertMessage, getMessages, getMembership, deleteMessage } = require("../db/query");
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const bcrypt = require('bcryptjs');
@@ -116,8 +116,7 @@ exports.membershipPost = async(req,res) => {
    
     
 }
-exports.messageDelete = (req,res) => {
-    console.log(req.user);
-    console.log(req.messages)
+exports.messageDelete = async (req,res) => {
+    await deleteMessage(req.body.message);
     res.redirect("/");
 }
